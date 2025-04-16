@@ -1,21 +1,18 @@
-import { Suspense, use } from "react";
+import { Suspense } from "react";
 
-export default function Page({
+export default function PageWrapper({
   searchParams,
 }: {
   searchParams: { index?: string };
 }) {
-  // sleep 500ms with react.use()
-  use(new Promise((resolve) => setTimeout(resolve, 500)));
-  return <PageComponent searchParams={searchParams} />;
+  return (
+    <Suspense fallback={<div>⏳ Suspense Fallback...</div>}>
+      <Page searchParams={searchParams} />
+    </Suspense>
+  );
 }
 
-async function PageComponent({
-  searchParams,
-}: {
-  searchParams: { index?: string };
-}) {
-  console.log("PageComponent");
-  await new Promise((resolve) => setTimeout(resolve, 500));
+async function Page({ searchParams }: { searchParams: { index?: string } }) {
+  await new Promise((resolve) => setTimeout(resolve, 1500));
   return <h1>Page for index: {searchParams.index ?? "none"}</h1>;
 }
